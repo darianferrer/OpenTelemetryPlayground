@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1116A15A-A04C-4656-BD6D-B053705595AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{29EF62DD-D592-4238-924A-68D827CF5325}"
+	ProjectSection(SolutionItems) = preProject
+		build\docker-compose.yml = build\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer.Api", "src\Customer.Api\Customer.Api.csproj", "{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer.Contracts", "src\Customer.Contracts\Customer.Contracts.csproj", "{377BF4DC-3B31-427D-864F-08A51241234F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSender", "src\EmailSender\EmailSender.csproj", "{1BF83929-4389-4AD9-AC93-CE0BDAC5323B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FraudCheck.Api", "src\FraudCheck.Api\FraudCheck.Api.csproj", "{80E52A2B-2765-4C78-BD6B-B1958617B689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FraudCheck.Contracts", "src\FraudCheck.Contracts\FraudCheck.Contracts.csproj", "{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{377BF4DC-3B31-427D-864F-08A51241234F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{377BF4DC-3B31-427D-864F-08A51241234F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{377BF4DC-3B31-427D-864F-08A51241234F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{377BF4DC-3B31-427D-864F-08A51241234F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BF83929-4389-4AD9-AC93-CE0BDAC5323B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BF83929-4389-4AD9-AC93-CE0BDAC5323B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BF83929-4389-4AD9-AC93-CE0BDAC5323B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BF83929-4389-4AD9-AC93-CE0BDAC5323B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E52A2B-2765-4C78-BD6B-B1958617B689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E52A2B-2765-4C78-BD6B-B1958617B689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E52A2B-2765-4C78-BD6B-B1958617B689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80E52A2B-2765-4C78-BD6B-B1958617B689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44} = {1116A15A-A04C-4656-BD6D-B053705595AD}
+		{377BF4DC-3B31-427D-864F-08A51241234F} = {1116A15A-A04C-4656-BD6D-B053705595AD}
+		{1BF83929-4389-4AD9-AC93-CE0BDAC5323B} = {1116A15A-A04C-4656-BD6D-B053705595AD}
+		{80E52A2B-2765-4C78-BD6B-B1958617B689} = {1116A15A-A04C-4656-BD6D-B053705595AD}
+		{CE0BAFD4-FA3C-4DA8-9D93-43CA46D1F599} = {1116A15A-A04C-4656-BD6D-B053705595AD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3EBCA31-241A-447E-9E36-04795C056066}
+	EndGlobalSection
+EndGlobal
