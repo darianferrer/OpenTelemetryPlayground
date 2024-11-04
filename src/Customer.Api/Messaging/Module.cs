@@ -11,7 +11,7 @@ internal static partial class Module
             .AddOptions<RabbitMqConfig>()
             .ValidateOnStart()
             .ValidateDataAnnotations()
-            .BindConfiguration(RabbitMqConfig.Postition);
+            .BindConfiguration(RabbitMqConfig.Position);
         builder.Services.AddMassTransit(x =>
         {
             x.UsingRabbitMq((context, cfg) =>

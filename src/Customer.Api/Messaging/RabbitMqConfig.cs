@@ -4,7 +4,7 @@ namespace Customer.Api.Messaging;
 
 public record RabbitMqConfig
 {
-    public const string Postition = "RabbitMqConfig";
+    public const string Position = "RabbitMqConfig";
 
     [Required]
     public required string Host { get; set; }

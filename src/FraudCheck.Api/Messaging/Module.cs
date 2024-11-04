@@ -12,10 +12,9 @@ internal static partial class Module
             .AddOptions<RabbitMqConfig>()
             .ValidateOnStart()
             .ValidateDataAnnotations()
-            .BindConfiguration(RabbitMqConfig.Postition);
+            .BindConfiguration(RabbitMqConfig.Position);
         builder.Services.AddMassTransit(x =>
         {
-            x.AddConsumer<CustomerFraudFlaggedConsumer>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 var options = context.GetRequiredService<IOptions<RabbitMqConfig>>();
@@ -24,11 +23,6 @@ internal static partial class Module
                 {
                     h.Username(config.Username);
                     h.Password(config.Password);
-                });
-                cfg.ReceiveEndpoint(nameof(CustomerFraudFlaggedConsumer), e =>
-                {
-                    e.Bind<CustomerFraudFlaggedMessage>();
-                    e.ConfigureConsumer<CustomerFraudFlaggedConsumer>(context);
                 });
             });
         });

@@ -22,7 +22,7 @@ var builder = new HostBuilder()
             .AddOptions<RabbitMqConfig>()
             .ValidateOnStart()
             .ValidateDataAnnotations()
-            .BindConfiguration(RabbitMqConfig.Postition);
+            .BindConfiguration(RabbitMqConfig.Position);
 
         services.AddMassTransit(x =>
         {
