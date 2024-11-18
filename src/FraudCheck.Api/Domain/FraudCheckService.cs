@@ -9,8 +9,18 @@ public class FraudCheckService
         _fraudEventPublisher = fraudEventPublisher;
     }
 
-    public async Task<bool> IsCustomerHighRiskAsync(CustomerVerification contract, CancellationToken stopToken)
+    public async Task<bool> IsCustomerHighRiskAsync(
+        CustomerVerification contract, 
+        CancellationToken stopToken)
     {
-        return false;
+        // TODO: add more realistic rules
+        var looksLikeFraud = Random.Shared.Next(0, 10) > 8;
+
+        if (looksLikeFraud)
+        {
+            await _fraudEventPublisher.PublishFraudRiskCustomerAsync(contract, stopToken);
+        }
+
+        return looksLikeFraud;
     }
 }

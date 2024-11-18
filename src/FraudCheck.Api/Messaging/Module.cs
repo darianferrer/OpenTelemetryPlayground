@@ -1,5 +1,4 @@
-﻿using FraudCheck.Contracts.Messaging;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Options;
 
 namespace FraudCheck.Api.Messaging;

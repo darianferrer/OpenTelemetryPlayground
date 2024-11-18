@@ -1,9 +1,10 @@
+using Customer.Api.Clients;
 using Customer.Api.Endpoints;
 using Customer.Api.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddCustomerServices().AddMessaging();
+builder.AddCustomerServices().AddMessaging().AddClients();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

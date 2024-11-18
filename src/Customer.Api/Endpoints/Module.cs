@@ -14,7 +14,8 @@ internal static class Module
             opt.UseNpgsql(builder.Configuration.GetConnectionString("Customers")));
 
         builder.Services
-            .AddTransient<IValidator<CreateOrUpdateCustomerContract>, CreateOrUpdateCustomerContractValidation>();
+            .AddTransient<IValidator<CreateOrUpdateCustomerContract>, CreateOrUpdateCustomerContractValidation>()
+            .AddTransient<IValidator<NewCustomer>, NewCustomerValidator>();
 
         builder.Services.AddScoped<ICustomerEventPublisher, CustomerEventPublisher>();
         builder.Services.AddScoped<CustomerService>();

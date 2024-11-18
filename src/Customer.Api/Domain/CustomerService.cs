@@ -1,4 +1,7 @@
 ﻿using Customer.Api.Data;
+using FluentResults;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace Customer.Api.Domain;
@@ -6,20 +9,46 @@ namespace Customer.Api.Domain;
 public class CustomerService
 {
     private readonly CustomersContext _context;
+    private readonly IValidator<NewCustomer> _newCustomerValidator;
     private readonly ICustomerEventPublisher _eventPublisher;
 
-    public CustomerService(CustomersContext context, ICustomerEventPublisher eventPublisher)
+    public CustomerService(
+        CustomersContext context,
+        IValidator<NewCustomer> newCustomerValidator,
+        ICustomerEventPublisher eventPublisher)
     {
         _context = context;
+        _newCustomerValidator = newCustomerValidator;
         _eventPublisher = eventPublisher;
     }
 
-    public async Task CreateAsync(CustomerEntity newEntity, CancellationToken stopToken)
+    public async Task<Result<CustomerEntity>> CreateAsync(NewCustomer newEntity, CancellationToken stopToken)
     {
-        _context.Add(newEntity);
+        var response = await _newCustomerValidator.ValidateAsync(newEntity, stopToken);
+        if (!response.IsValid)
+        {
+            return Result.Fail(response.Errors.Select(MapError));
+        }
+
+        var entity = Map(newEntity);
+        _context.Add(entity);
         await _context.SaveChangesAsync(stopToken);
 
-        await _eventPublisher.PublishCreatedAsync(newEntity, stopToken);
+        await _eventPublisher.PublishCreatedAsync(entity, stopToken);
+        return Result.Ok(entity);
+
+        static CustomerEntity Map(NewCustomer newEntity)
+            => new()
+            {
+                Id = Guid.NewGuid(),
+                Email = newEntity.Email,
+                FirstName = newEntity.FirstName,
+                LastName = newEntity.LastName,
+                Title = newEntity.Title,
+            };
+
+        static IError MapError(ValidationFailure error) =>
+            new Error(error.ErrorMessage ?? error.ErrorCode);
     }
 
     public Task<List<CustomerEntity>> GetAllAsync(CancellationToken stopToken)
