@@ -32,28 +32,33 @@ internal static class Module
 
     public static void MapCustomerEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/api/customers");
+        var group = app.MapGroup("/api/customers").WithSummary("Customer endpoints");
 
         group.MapPost("", Endpoints.CreateAsync)
             .Produces<CustomerContract>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Creates a new customer if request is valid");
 
         group.MapGet("", Endpoints.GetAllAsync)
-            .Produces<CustomersContract>(StatusCodes.Status200OK);
+            .Produces<CustomersContract>(StatusCodes.Status200OK)
+            .WithSummary("Retrieves all the customers stored. Does not support pagination for now");
 
         group.MapGet("{id}", Endpoints.GetByIdAsync)
             .WithName("GetById")
             .Produces<CustomerContract>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Gets a customer by its ID if it exists");
 
         group.MapPut("{id}", Endpoints.UpdateAsync)
             .Produces<CustomerContract>(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Updates a customer if it finds its ID and request is valid");
 
         group.MapDelete("{id}", Endpoints.DeleteAsync)
             .Produces<CustomerContract>(StatusCodes.Status204NoContent)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Deletes a customer");
     }
 }

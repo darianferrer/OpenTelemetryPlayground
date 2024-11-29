@@ -8,14 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddCustomerServices().AddMessaging().AddClients().AddOpenTelemetry();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new()
+        {
+            Title = "Customer API",
+            Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString(),
+            Description = "API for processing customers."
+        };
+        return Task.CompletedTask;
+    }));
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+        options.SwaggerEndpoint("/openapi/v1.json", "v1"));
 
     await app.MigrateDatabaseAsync();
 }
