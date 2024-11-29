@@ -1,10 +1,11 @@
 using Customer.Api.Clients;
 using Customer.Api.Endpoints;
 using Customer.Api.Messaging;
+using Customer.Api.Telemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddCustomerServices().AddMessaging().AddClients();
+builder.AddCustomerServices().AddMessaging().AddClients().AddOpenTelemetry();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,6 +19,8 @@ if (app.Environment.IsDevelopment())
 
     await app.MigrateDatabaseAsync();
 }
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 app.MapCustomerEndpoints();
 

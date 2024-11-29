@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{29EF62DD-D592-4238-924A-68D827CF5325}"
 	ProjectSection(SolutionItems) = preProject
 		build\docker-compose.yml = build\docker-compose.yml
+		build\grafana-datasources.yml = build\grafana-datasources.yml
+		build\prometheus.yml = build\prometheus.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer.Api", "src\Customer.Api\Customer.Api.csproj", "{E1F6F94C-CBDD-4CCB-B02D-F3CE37C2BB44}"

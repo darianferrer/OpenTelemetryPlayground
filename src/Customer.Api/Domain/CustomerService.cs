@@ -1,4 +1,6 @@
-﻿using Customer.Api.Data;
+﻿using System.Diagnostics;
+using Customer.Api.Data;
+using Customer.Api.Telemetry;
 using FluentResults;
 using FluentValidation;
 using FluentValidation.Results;
@@ -31,10 +33,15 @@ public class CustomerService
         }
 
         var entity = Map(newEntity);
+        Activity.Current.EnrichWithCustomer(entity);
+        entity.SetBaggage();
+
         _context.Add(entity);
         await _context.SaveChangesAsync(stopToken);
+        ApplicationDiagnostics.CustomerCreatedCounter.Add(1);
 
         await _eventPublisher.PublishCreatedAsync(entity, stopToken);
+
         return Result.Ok(entity);
 
         static CustomerEntity Map(NewCustomer newEntity)
@@ -54,14 +61,24 @@ public class CustomerService
     public Task<List<CustomerEntity>> GetAllAsync(CancellationToken stopToken)
         => _context.Customers.AsNoTracking().ToListAsync(stopToken);
 
-    public ValueTask<CustomerEntity?> GetByIdAsync(Guid id, CancellationToken stopToken)
-        => _context.Customers.FindAsync([id], stopToken);
+    public async ValueTask<CustomerEntity?> GetByIdAsync(Guid id, CancellationToken stopToken)
+    {
+        Activity.Current.EnrichWithCustomerId(id);
+
+        var entity = await _context.Customers.FindAsync([id], stopToken);
+        entity?.SetBaggage();
+
+        return entity;
+    }
 
     public async Task<CustomerEntity?> UpdateAsync(
         Guid id,
         CustomerEntity toUpdate,
         CancellationToken stopToken)
     {
+        Activity.Current.EnrichWithCustomer(toUpdate);
+        toUpdate.SetBaggage();
+
         var currentCustomer = await _context.Customers.FindAsync([id], stopToken);
         if (currentCustomer is null)
         {
@@ -79,12 +96,17 @@ public class CustomerService
 
     public async Task DeleteAsync(Guid id, CancellationToken stopToken)
     {
+        Activity.Current.EnrichWithCustomerId(id);
+
         var customer = await _context.Customers.FindAsync([id], stopToken);
         if (customer is not null)
         {
+            customer.SetBaggage();
+
             _context.Customers.Remove(customer);
 
             await _context.SaveChangesAsync(stopToken);
+            ApplicationDiagnostics.CustomerCreatedCounter.Add(-1);
 
             await _eventPublisher.PublishDeletedAsync(customer, stopToken);
         }
