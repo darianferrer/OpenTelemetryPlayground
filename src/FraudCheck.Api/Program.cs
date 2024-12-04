@@ -2,6 +2,7 @@ using FraudCheck.Api.Endpoints;
 using FraudCheck.Api.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 builder.AddFraudCheckServices().AddMessaging();
 
@@ -19,6 +20,7 @@ builder.Services.AddOpenApi(options =>
     }));
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
