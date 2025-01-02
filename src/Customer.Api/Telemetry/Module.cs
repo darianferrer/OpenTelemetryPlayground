@@ -19,7 +19,7 @@ internal static class Module
             {
                 metrics
                     .AddMeter(InstrumentationOptions.MeterName)
-                    .AddMeter(ApplicationDiagnostics.Meter.Name);
+                    .AddMeter(ApplicationDiagnostics.MeterName);
             });
 
         return builder;
