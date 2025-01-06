@@ -41,12 +41,6 @@ public static class Extensions
 
     public static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
-        builder.Logging.AddOpenTelemetry(logging =>
-        {
-            logging.IncludeFormattedMessage = true;
-            logging.IncludeScopes = true;
-        });
-
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
@@ -65,6 +59,11 @@ public static class Extensions
             .WithLogging(logging =>
             {
                 logging.AddOtlpExporter();
+            },
+            logging =>
+            {
+                logging.IncludeFormattedMessage = true;
+                logging.IncludeScopes = true;
             });
 
         builder.AddOpenTelemetryExporters();

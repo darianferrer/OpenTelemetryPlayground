@@ -7,6 +7,10 @@ receivers:
         endpoint: 0.0.0.0:4318
 
 processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 50
+    spike_limit_percentage: 30
   batch:
   filter/swagger:
     traces:
@@ -39,22 +43,14 @@ exporters:
 service:
   pipelines:
     traces:
-      receivers: [otlp]
-      processors: 
-        - batch
-        - filter/swagger
-      exporters: 
-        - otlp/aspire
-        - otlp/jaeger
+      receivers:  [otlp]
+      processors: [memory_limiter, batch, filter/swagger]
+      exporters:  [otlp/aspire, otlp/jaeger]
     metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: 
-        - otlp/aspire
-        - prometheus
+      receivers:  [otlp]
+      processors: [memory_limiter, batch]
+      exporters:  [otlp/aspire, prometheus]
     logs:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: 
-        - otlp/aspire
-        - loki
+      receivers:  [otlp]
+      processors: [memory_limiter]
+      exporters:  [otlp/aspire, loki]
