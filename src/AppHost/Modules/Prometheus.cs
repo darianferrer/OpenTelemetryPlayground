@@ -6,7 +6,7 @@ internal static class Prometheus
     {
         const string Path = $"{Constants.BaseBuildPath}/prometheus";
         var prometheusFolder = new ContainerMountAnnotation(
-            Path, // Can't bound relative Windows path
+            Path, // Can't bound relative Windows path on WSL
             "/etc/prometheus",
             ContainerMountType.BindMount,
             true);

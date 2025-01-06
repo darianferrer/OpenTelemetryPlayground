@@ -5,17 +5,17 @@ internal static class Grafana
     public static void AddGrafanaContainer(this IDistributedApplicationBuilder builder)
     {
         var grafanaDatasourceFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/datasources", // Can't bound relative Windows path
+            $"{Constants.BaseBuildPath}/grafana/datasources", // Can't bound relative Windows path on WSL
             "/etc/grafana/provisioning/datasources",
             ContainerMountType.BindMount,
             true);
         var grafanaDashboardsFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/dashboards", // Can't bound relative Windows path
+            $"{Constants.BaseBuildPath}/grafana/dashboards", // Can't bound relative Windows path on WSL
             "/var/lib/grafana/dashboards",
             ContainerMountType.BindMount,
             true);
         var grafanaDashboardConfigFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/dashboards/main.yaml", // Can't bound relative Windows path
+            $"{Constants.BaseBuildPath}/grafana/dashboards/main.yaml", // Can't bound relative Windows path on WSL
             "/etc/grafana/provisioning/dashboards/main.yaml",
             ContainerMountType.BindMount,
             true);
