@@ -1,10 +1,11 @@
-using FraudCheck.Api.Endpoints;
+﻿using FraudCheck.Api.Endpoints;
 using FraudCheck.Api.Messaging;
+using FraudCheck.Api.Telemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
-builder.AddFraudCheckServices().AddMessaging();
+builder.AddFraudCheckServices().AddMessaging().AddOpenTelemetry();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi(options =>

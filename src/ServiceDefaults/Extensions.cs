@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -49,31 +47,24 @@ public static class Extensions
             logging.IncludeScopes = true;
         });
 
-        var aspireOtlpEndpoint = new Uri(builder.Configuration.GetValue<string>("OTEL_EXPORTER_OTLP_ENDPOINT")!);
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
                 metrics.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation()
-                    .AddPrometheusExporter()
-                    .AddOtlpExporter(options => options.Endpoint = aspireOtlpEndpoint);
+                    .AddOtlpExporter();
             })
             .WithTracing(tracing =>
             {
                 tracing.AddSource(builder.Environment.ApplicationName)
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation(options => options.RecordException = true)
-                    .AddOtlpExporter(options =>
-                        options.Endpoint = new Uri(builder.Configuration.GetValue<string>("Jaeger")!))
-                    .AddOtlpExporter(options => options.Endpoint = aspireOtlpEndpoint);
+                    .AddOtlpExporter();
             })
             .WithLogging(logging =>
             {
-                logging
-                    .AddOtlpExporter(options =>
-                        options.Endpoint = new Uri(builder.Configuration.GetValue<string>("Loki")!))
-                    .AddOtlpExporter(options => options.Endpoint = aspireOtlpEndpoint);
+                logging.AddOtlpExporter();
             });
 
         builder.AddOpenTelemetryExporters();
@@ -117,8 +108,6 @@ public static class Extensions
                 Predicate = r => r.Tags.Contains("live")
             });
         }
-
-        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         return app;
     }

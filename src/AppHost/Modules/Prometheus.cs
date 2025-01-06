@@ -4,9 +4,9 @@ internal static class Prometheus
 {
     public static void AddPrometheusContainer(this IDistributedApplicationBuilder builder)
     {
-        const string path = $"{Constants.BaseBuildPath}/prometheus";
+        const string Path = $"{Constants.BaseBuildPath}/prometheus";
         var prometheusFolder = new ContainerMountAnnotation(
-            path, // Can't bound relative Windows path
+            Path, // Can't bound relative Windows path
             "/etc/prometheus",
             ContainerMountType.BindMount,
             true);

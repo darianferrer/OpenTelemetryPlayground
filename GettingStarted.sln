@@ -33,6 +33,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prometheus", "prometheus", 
 		build\prometheus\prometheus.yml = build\prometheus\prometheus.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "collector", "collector", "{1AE48025-8139-4856-AF58-A14B3A1982B2}"
+	ProjectSection(SolutionItems) = preProject
+		build\collector\config.yaml = build\collector\config.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dashboards", "dashboards", "{73F0447F-1544-482C-AC3C-5350A3A0C729}"
+	ProjectSection(SolutionItems) = preProject
+		build\grafana\dashboards\ASP.NET Core Endpoint-1735912267913.json = build\grafana\dashboards\ASP.NET Core Endpoint-1735912267913.json
+		build\grafana\dashboards\ASP.NET Core-1735912214513.json = build\grafana\dashboards\ASP.NET Core-1735912214513.json
+		build\grafana\dashboards\main.yaml = build\grafana\dashboards\main.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +94,8 @@ Global
 		{CD9E637F-EEB5-4182-AF75-F13A7C0DA767} = {1E6963D5-4B9F-4DA7-95DE-50A1F3DF9FDB}
 		{0D3A9344-3C2E-469D-86FB-9818E4F5237A} = {CD9E637F-EEB5-4182-AF75-F13A7C0DA767}
 		{7D467951-E0F7-40C2-A147-895789273B34} = {1E6963D5-4B9F-4DA7-95DE-50A1F3DF9FDB}
+		{1AE48025-8139-4856-AF58-A14B3A1982B2} = {1E6963D5-4B9F-4DA7-95DE-50A1F3DF9FDB}
+		{73F0447F-1544-482C-AC3C-5350A3A0C729} = {CD9E637F-EEB5-4182-AF75-F13A7C0DA767}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3EBCA31-241A-447E-9E36-04795C056066}

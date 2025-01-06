@@ -6,6 +6,7 @@ builder.AddGrafanaContainer();
 builder.AddPrometheusContainer();
 builder.AddLokiContainer();
 builder.AddJaegerContainer();
+builder.AddOpenTelemetryCollectorContainer();
 
 var postgresDatabase = builder.AddPostgressContainer();
 

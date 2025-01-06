@@ -1,0 +1,60 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+  filter/swagger:
+    traces:
+        span:
+          - 'attributes["http.route"] == "/openapi/{documentName}.json"'
+          - 'attributes["url.path"] == "/_vs/browserLink"'
+          - 'IsMatch(attributes["url.path"], "/swagger/.*")'
+          - 'IsMatch(attributes["url.path"], "/_vs/.*")'
+          - 'IsMatch(attributes["url.path"], "/_framework/.*")'
+          - 'IsMatch(attributes["url.full"], ".*/getScriptTag")'
+
+exporters:
+  otlp/aspire:
+    endpoint: ${env:ASPIRE_ENDPOINT}
+    headers:
+      x-otlp-api-key: ${env:ASPIRE_API_KEY}
+    tls:
+      insecure: true
+  otlp/jaeger:
+    endpoint: "jaeger:4317"
+    tls:
+        insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tls:
+        insecure: true
+  
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: 
+        - batch
+        - filter/swagger
+      exporters: 
+        - otlp/aspire
+        - otlp/jaeger
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: 
+        - otlp/aspire
+        - prometheus
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: 
+        - otlp/aspire
+        - loki
