@@ -11,7 +11,7 @@ internal static class Module
     public static WebApplicationBuilder AddCustomerServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContextPool<CustomersContext>(opt =>
-            opt.UseNpgsql(builder.Configuration.GetConnectionString("Customers")));
+            opt.UseNpgsql(builder.Configuration.GetConnectionString("customers")));
 
         builder.Services
             .AddTransient<IValidator<CreateOrUpdateCustomerContract>, CreateOrUpdateCustomerContractValidation>()

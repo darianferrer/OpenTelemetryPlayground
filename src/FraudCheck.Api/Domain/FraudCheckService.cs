@@ -10,7 +10,7 @@ public class FraudCheckService
     }
 
     public async Task<bool> IsCustomerHighRiskAsync(
-        CustomerVerification contract, 
+        CustomerVerification contract,
         CancellationToken stopToken)
     {
         // TODO: add more realistic rules

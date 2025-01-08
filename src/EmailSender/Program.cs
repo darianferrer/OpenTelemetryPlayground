@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 var builder = new HostBuilder()
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -18,24 +17,14 @@ var builder = new HostBuilder()
     })
     .ConfigureServices((hostContext, services) =>
     {
-        services
-            .AddOptions<RabbitMqConfig>()
-            .ValidateOnStart()
-            .ValidateDataAnnotations()
-            .BindConfiguration(RabbitMqConfig.Position);
-
         services.AddMassTransit(x =>
         {
             x.AddConsumer<EmailSenderConsumer>();
             x.UsingRabbitMq((context, cfg) =>
             {
-                var options = context.GetRequiredService<IOptions<RabbitMqConfig>>();
-                var config = options.Value;
-                cfg.Host(config.Host, "/", h =>
-                {
-                    h.Username(config.Username);
-                    h.Password(config.Password);
-                });
+                var configService = context.GetRequiredService<IConfiguration>();
+                var connectionString = configService.GetConnectionString("event-broker");
+                cfg.Host(connectionString);
                 cfg.ReceiveEndpoint(nameof(EmailSenderConsumer), e =>
                 {
                     e.Bind<CustomerCreatedMessage>();

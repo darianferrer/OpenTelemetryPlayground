@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FraudCheck.Contracts\FraudCheck.Contracts.csproj" />
+    <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

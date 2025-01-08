@@ -1,8 +1,7 @@
 ﻿using MassTransit.Logging;
 using MassTransit.Monitoring;
-using Npgsql;
 
-namespace Customer.Api.Telemetry;
+namespace FraudCheck.Api.Telemetry;
 
 internal static class Module
 {
@@ -12,14 +11,12 @@ internal static class Module
             .WithTracing(tracing =>
             {
                 tracing
-                    .AddNpgsql()
                     .AddSource(DiagnosticHeaders.DefaultListenerName);
             })
             .WithMetrics(metrics =>
             {
                 metrics
-                    .AddMeter(InstrumentationOptions.MeterName)
-                    .AddMeter(ApplicationDiagnostics.MeterName);
+                    .AddMeter(InstrumentationOptions.MeterName);
             });
 
         return builder;
