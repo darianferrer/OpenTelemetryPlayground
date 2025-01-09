@@ -7,6 +7,9 @@ internal static class ApplicationDiagnostics
     public const string MeterName = "Customer.Api";
     public static readonly Meter Meter = new(MeterName);
 
-    public static readonly Counter<long> CustomerCreatedCounter = 
+    public static readonly Counter<long> CustomerCreatedCounter =
         Meter.CreateCounter<long>("customer.created");
+
+    public static readonly Counter<long> TenantCreatedCounter =
+        Meter.CreateCounter<long>("tenant.created");
 }
