@@ -1,24 +1,22 @@
 ﻿using FraudCheck.Api.Endpoints;
 using FraudCheck.Api.Messaging;
 using FraudCheck.Api.Telemetry;
+using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.AddFraudCheckServices().AddMessaging().AddOpenTelemetry();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi(options =>
-    options.AddDocumentTransformer((document, context, cancellationToken) =>
+builder.Services
+    .AddHttpContextAccessor()
+    .AddEndpointsApiExplorer()
+    .AddOpenApi(options =>
     {
-        document.Info = new()
-        {
-            Title = "FraudCheck API",
-            Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString(),
-            Description = "API for customers fraud checks."
-        };
-        return Task.CompletedTask;
-    }));
+        options.AddDocumentTransformer<AddServersTransformer>();
+        options.AddDocumentTransformer<AppVersionTransformer>();
+        options.AddOperationTransformer<OpenApiParameterTransformer>();
+    });
 
 var app = builder.Build();
 app.MapDefaultEndpoints();

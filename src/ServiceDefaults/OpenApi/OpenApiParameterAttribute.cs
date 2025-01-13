@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace Customer.Api.OpenApi;
+namespace Microsoft.AspNetCore.OpenApi;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public class OpenApiParameterAttribute : Attribute

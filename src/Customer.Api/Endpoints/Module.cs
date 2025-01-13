@@ -1,9 +1,9 @@
 ﻿using Customer.Api.Data;
 using Customer.Api.Domain;
-using Customer.Api.OpenApi;
 using Customer.Contracts.Api;
 using EntityFramework.Exceptions.PostgreSQL;
 using FluentValidation;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 
 namespace Customer.Api.Endpoints;

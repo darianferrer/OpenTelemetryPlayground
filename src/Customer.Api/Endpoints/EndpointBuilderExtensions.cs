@@ -1,4 +1,4 @@
-﻿using Customer.Api.OpenApi;
+﻿using Microsoft.AspNetCore.OpenApi;
 
 namespace Customer.Api.Endpoints;
 
