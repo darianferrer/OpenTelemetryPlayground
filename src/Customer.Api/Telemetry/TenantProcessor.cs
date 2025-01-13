@@ -15,7 +15,8 @@ public class TenantProcessor : BaseProcessor<Activity>
 
     public override void OnEnd(Activity data)
     {
-        data.SetTag(TagNames.TenantId, _tenantProcessor.TenantId());
+        var tenantId = _tenantProcessor.TenantId();
+        if (tenantId is not null) data.SetTag(TagNames.TenantId, tenantId);
         base.OnEnd(data);
     }
 }
