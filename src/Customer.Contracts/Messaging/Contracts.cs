@@ -7,8 +7,10 @@ public record Customer(
     string LastName,
     string? Title);
 
-public record CustomerCreatedMessage(Customer Created);
+public record Tenant(string Code);
 
-public record CustomerUpdatedMessage(Customer Before, Customer After);
+public record CustomerCreatedMessage(Customer Created, Tenant Tenant);
 
-public record CustomerDeletedMessage(Customer Deleted);
+public record CustomerUpdatedMessage(Customer Before, Customer After, Tenant Tenant);
+
+public record CustomerDeletedMessage(Customer Deleted, Tenant Tenant);

@@ -48,6 +48,7 @@ public class CustomerService
             => new()
             {
                 Id = Guid.NewGuid(),
+                TenantId = newEntity.TenantId,
                 Email = newEntity.Email,
                 FirstName = newEntity.FirstName,
                 LastName = newEntity.LastName,

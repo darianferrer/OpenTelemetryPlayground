@@ -7,4 +7,7 @@ public record CustomerEntity
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
     public string? Title { get; init; }
+
+    public required string TenantId { get; init; }
+    public TenantEntity Tenant { get; init; } = default!;
 }

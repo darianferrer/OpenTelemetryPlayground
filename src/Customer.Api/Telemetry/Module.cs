@@ -1,6 +1,7 @@
 ﻿using MassTransit.Logging;
 using MassTransit.Monitoring;
 using Npgsql;
+using OpenTelemetry.Trace;
 
 namespace Customer.Api.Telemetry;
 
@@ -8,7 +9,9 @@ internal static class Module
 {
     public static WebApplicationBuilder AddOpenTelemetry(this WebApplicationBuilder builder)
     {
-        builder.Services.AddOpenTelemetry()
+        builder.Services
+            .ConfigureOpenTelemetryTracerProvider(providerBuilder => providerBuilder.AddProcessor<TenantProcessor>())
+            .AddOpenTelemetry()
             .WithTracing(tracing =>
             {
                 tracing

@@ -2,15 +2,17 @@
 using Customer.Api.Domain;
 using Customer.Contracts.Api;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Customer.Api.Endpoints;
 
-internal static class Endpoints
+internal static class CustomerEndpoints
 {
     public static async Task<IResult> CreateAsync(
         CustomerService service,
         IValidator<CreateOrUpdateCustomerContract> validator,
         CreateOrUpdateCustomerContract contract,
+        [FromHeader(Name = TenantProvider.TenantIdHeaderName)] string tenantId,
         CancellationToken stopToken)
     {
         var validationResult = validator.Validate(contract);
@@ -19,16 +21,16 @@ internal static class Endpoints
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var newEntity = MapToModel(contract);
+        var newEntity = MapToModel(contract, tenantId);
         var result = await service.CreateAsync(newEntity, stopToken);
 
         return result.IsFailed switch
         {
             false => Results.CreatedAtRoute(
-                "GetById", 
+                "Customer.GetById",
                 new { id = result.Value.Id },
                 MapToContract(result.Value)),
-            _ => Results.BadRequest(result.Errors),
+            _ => Results.BadRequest(result.Errors), // TODO: map errors to ProblemDetails
         };
     }
 
@@ -55,6 +57,7 @@ internal static class Endpoints
         IValidator<CreateOrUpdateCustomerContract> validator,
         Guid id,
         CreateOrUpdateCustomerContract contract,
+        [FromHeader(Name = TenantProvider.TenantIdHeaderName)] string tenantId,
         CancellationToken stopToken)
     {
         var validationResult = validator.Validate(contract);
@@ -63,7 +66,7 @@ internal static class Endpoints
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var toUpdate = MapToEntity(id, contract);
+        var toUpdate = MapToEntity(id, contract, tenantId);
         var entity = await service.UpdateAsync(id, toUpdate, stopToken);
 
         return entity is null ? Results.NotFound() : Results.NoContent();
@@ -79,15 +82,17 @@ internal static class Endpoints
         return Results.NoContent();
     }
 
-    private static NewCustomer MapToModel(CreateOrUpdateCustomerContract contract) => new(
+    private static NewCustomer MapToModel(CreateOrUpdateCustomerContract contract, string tenantId) => new(
+        tenantId,
         contract.Email,
         contract.FirstName,
         contract.LastName,
         contract.Title);
 
-    private static CustomerEntity MapToEntity(Guid id, CreateOrUpdateCustomerContract contract) => new()
+    private static CustomerEntity MapToEntity(Guid id, CreateOrUpdateCustomerContract contract, string tenantId) => new()
     {
         Id = id,
+        TenantId = tenantId,
         Email = contract.Email,
         FirstName = contract.FirstName,
         LastName = contract.LastName,

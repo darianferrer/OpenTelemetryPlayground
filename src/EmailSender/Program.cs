@@ -1,6 +1,8 @@
 ﻿using Customer.Contracts.Messaging;
 using EmailSender;
 using MassTransit;
+using MassTransit.Logging;
+using MassTransit.Monitoring;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +37,18 @@ var builder = new HostBuilder()
             });
         });
 
+        services
+            .AddServiceDefaults(hostContext.HostingEnvironment)
+            .AddOpenTelemetry()
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .AddSource(DiagnosticHeaders.DefaultListenerName);
+            })
+            .WithMetrics(metrics =>
+            {
+                metrics.AddMeter(InstrumentationOptions.MeterName);
+            });
     })
     .ConfigureLogging((hostingContext, logging) =>
     {
