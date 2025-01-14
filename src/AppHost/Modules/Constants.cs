@@ -2,5 +2,5 @@
 
 internal class Constants
 {
-    public const string BaseBuildPath = "/mnt/c/Projects/darianferrer/EventsCourse/build";
+    public const string BaseBuildPath = "/mnt/c/Projects/darianferrer/OpenTelemetryPlayground/build";
 }
