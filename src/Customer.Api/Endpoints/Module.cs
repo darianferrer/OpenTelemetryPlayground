@@ -32,7 +32,8 @@ internal static class Module
     {
         builder.Services
             .AddTransient<TenantProvider>()
-            .AddScoped<TenantService>();
+            .AddScoped<TenantService>()
+            .AddTransient<IValidator<TenantContract>, NewTenantValidator>();
 
         return builder;
     }
