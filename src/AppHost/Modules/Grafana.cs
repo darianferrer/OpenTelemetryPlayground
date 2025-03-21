@@ -4,25 +4,10 @@ internal static class Grafana
 {
     public static void AddGrafanaContainer(this IDistributedApplicationBuilder builder)
     {
-        var grafanaDatasourceFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/datasources", // Can't bound relative Windows path on WSL
-            "/etc/grafana/provisioning/datasources",
-            ContainerMountType.BindMount,
-            true);
-        var grafanaDashboardsFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/dashboards", // Can't bound relative Windows path on WSL
-            "/var/lib/grafana/dashboards",
-            ContainerMountType.BindMount,
-            true);
-        var grafanaDashboardConfigFolder = new ContainerMountAnnotation(
-            $"{Constants.BaseBuildPath}/grafana/dashboards/main.yaml", // Can't bound relative Windows path on WSL
-            "/etc/grafana/provisioning/dashboards/main.yaml",
-            ContainerMountType.BindMount,
-            true);
         builder.AddContainer("grafana", "grafana/grafana", "11.3.0")
-            .WithAnnotation(grafanaDatasourceFolder)
-            .WithAnnotation(grafanaDashboardsFolder)
-            .WithAnnotation(grafanaDashboardConfigFolder)
+            .WithBindMount($"{Constants.BaseBuildPath}/grafana/datasources", "/etc/grafana/provisioning/datasources", true)
+            .WithBindMount($"{Constants.BaseBuildPath}/grafana/dashboards", "/var/lib/grafana/dashboards", true)
+            .WithBindMount($"{Constants.BaseBuildPath}/grafana/dashboards/main.yaml", "/etc/grafana/provisioning/dashboards/main.yaml", true)
             .WithEnvironment("GF_AUTH_ANONYMOUS_ENABLED", "true")
             .WithEnvironment("GF_AUTH_ANONYMOUS_ORG_ROLE", "Admin")
             .WithHttpEndpoint(targetPort: 3000, port: 3000);
